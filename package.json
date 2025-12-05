@@ -1,0 +1,16 @@
+{
+  "name": "confetti-notifier",
+  "version": "1.0.0",
+  "description": "macOS full-screen confetti animation notifier",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": ["confetti", "notification", "macos", "electron"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "electron": "^28.0.0"
+  }
+}

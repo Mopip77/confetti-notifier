@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Confetti</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      overflow: hidden;
+      background: transparent !important;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: transparent !important;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <script src="node_modules/canvas-confetti/dist/confetti.browser.js"></script>
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    // Location to origin and default angle mapping
+    const locationMap = {
+      'T':  { origin: { x: 0.5, y: 0 },   defaultAngle: 270 },
+      'TR': { origin: { x: 1,   y: 0 },   defaultAngle: 225 },
+      'R':  { origin: { x: 1,   y: 0.5 }, defaultAngle: 180 },
+      'BR': { origin: { x: 1,   y: 1 },   defaultAngle: 135 },
+      'B':  { origin: { x: 0.5, y: 1 },   defaultAngle: 90 },
+      'BL': { origin: { x: 0,   y: 1 },   defaultAngle: 45 },
+      'L':  { origin: { x: 0,   y: 0.5 }, defaultAngle: 0 },
+      'TL': { origin: { x: 0,   y: 0 },   defaultAngle: 315 }
+    };
+
+    // Wait for config from main process
+    ipcRenderer.on('config', (event, config) => {
+      launchConfetti(config);
+    });
+
+    function launchConfetti(config) {
+      const canvas = document.getElementById('canvas');
+      const myConfetti = confetti.create(canvas, {
+        resize: true,
+        useWorker: true
+      });
+
+      // Build confetti configuration
+      const confettiConfig = {};
+
+      // Handle location
+      const location = config.location || 'B';
+      const locationData = locationMap[location];
+      confettiConfig.origin = locationData.origin;
+
+      // Angle - use custom if provided, otherwise use location default
+      confettiConfig.angle = config.angle !== undefined
+        ? config.angle
+        : locationData.defaultAngle;
+
+      // Optional parameters
+      if (config.particleCount !== undefined) {
+        confettiConfig.particleCount = config.particleCount;
+      }
+
+      if (config.spread !== undefined) {
+        confettiConfig.spread = config.spread;
+      }
+
+      // Calculate ticks from duration (60fps = 16.67ms per frame)
+      // ticks = duration / 16.67
+      confettiConfig.ticks = Math.floor(config.duration / 16.67);
+
+      // Handle text/emoji shapes
+      if (config.text) {
+        const characters = config.text.split('');
+        const shapes = characters.map(char =>
+          confetti.shapeFromText({
+            text: char,
+            scalar: 2
+          })
+        );
+        confettiConfig.shapes = shapes;
+        confettiConfig.scalar = 2;
+      }
+
+      // Launch single burst
+      myConfetti(confettiConfig);
+    }
+  </script>
+</body>
+</html>

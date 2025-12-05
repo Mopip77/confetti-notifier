@@ -35,6 +35,7 @@ node index.js --duration 3000 --location TR --text ✅🚧❌
 - `--spread <degrees>`: Angular spread of particles (default: 45)
 - `--velocity <number>`: Initial launch velocity in pixels, controls how far particles travel (default: 45, try 60-100 for longer distance)
 - `--text <string>`: Custom emoji or text characters to use as confetti shapes
+- `--textSize <number>`: Size multiplier for text/emoji shapes (default: 2, try 3-5 for larger text)
 - `--location <position>`: Launch position. Options:
   - `T`: Top center
   - `TR`: Top right
@@ -75,6 +76,16 @@ node index.js --duration 5000 --particleCount 300 --spread 120
 ### Longer distance confetti
 ```bash
 node index.js --duration 4000 --velocity 80 --location TR --text 🎉
+```
+
+### Large text confetti
+```bash
+node index.js --duration 3000 --text ✅ --textSize 5 --location T
+```
+
+### Combination: large text with high velocity
+```bash
+node index.js --duration 5000 --text 🚀💫⭐ --textSize 4 --velocity 100 --particleCount 150
 ```
 
 ## How It Works

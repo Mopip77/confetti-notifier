@@ -33,6 +33,9 @@ function parseArgs() {
       } else if (key === 'text') {
         config.text = value;
         i++;
+      } else if (key === 'textSize') {
+        config.textSize = parseInt(value, 10);
+        i++;
       } else if (key === 'location') {
         config.location = value;
         i++;
@@ -47,7 +50,7 @@ function parseArgs() {
 function validateConfig(config) {
   if (!config.duration) {
     console.error('Error: --duration is required');
-    console.log('Usage: node index.js --duration <ms> [--particleCount <n>] [--angle <degrees>] [--spread <degrees>] [--velocity <n>] [--text <emoji>] [--location <T|TR|R|BR|B|BL|L|TL>]');
+    console.log('Usage: node index.js --duration <ms> [--particleCount <n>] [--angle <degrees>] [--spread <degrees>] [--velocity <n>] [--text <emoji>] [--textSize <n>] [--location <T|TR|R|BR|B|BL|L|TL>]');
     process.exit(1);
   }
 

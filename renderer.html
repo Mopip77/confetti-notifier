@@ -91,15 +91,16 @@
 
       // Handle text/emoji shapes
       if (config.text) {
+        const textScalar = config.textSize || 2;
         const characters = config.text.split('');
         const shapes = characters.map(char =>
           confetti.shapeFromText({
             text: char,
-            scalar: 2
+            scalar: textScalar
           })
         );
         confettiConfig.shapes = shapes;
-        confettiConfig.scalar = 2;
+        confettiConfig.scalar = textScalar;
       }
 
       // Launch single burst

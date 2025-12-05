@@ -81,6 +81,10 @@
         confettiConfig.spread = config.spread;
       }
 
+      if (config.velocity !== undefined) {
+        confettiConfig.startVelocity = config.velocity;
+      }
+
       // Calculate ticks from duration (60fps = 16.67ms per frame)
       // ticks = duration / 16.67
       confettiConfig.ticks = Math.floor(config.duration / 16.67);
